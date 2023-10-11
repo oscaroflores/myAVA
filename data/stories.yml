@@ -1,0 +1,10 @@
+version: "3.1"
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: add_event
+  - action: utter_add_event
+  - intent: event_inform
+  - action: action_add_event

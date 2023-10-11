@@ -1,0 +1,46 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - bot_challenge
+  - add_event
+  - event_inform
+
+entities:
+  - event
+
+slots:
+  event: 
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: event_form
+
+actions:
+  - action_hello_world
+  - action_add_event
+  - action_get_event
+
+responses:
+  utter_add_event:
+  - text: "Lets add an event! Use following format: <event-name>, <#d>/<#m>/<#y>, <time>"
+  
+  utter_greet:
+  - text: "Hey! How are you?"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
