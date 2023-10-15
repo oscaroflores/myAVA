@@ -8,6 +8,7 @@ intents:
   - bot_challenge
   - add_event
   - event_inform
+  - telegram_start
 
 entities:
   - event
@@ -29,7 +30,7 @@ responses:
   - text: "Use following format without spaces and military time: <event-name>,<mm/dd/YYYY>,<hr:min>"
   
   utter_greet:
-  - text: "Hey! How are you?"
+  - text: "Hello there!"
 
   utter_did_that_help:
   - text: "Did that help you?"

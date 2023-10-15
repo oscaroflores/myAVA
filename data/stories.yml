@@ -4,6 +4,8 @@ stories:
 
 - story: happy path
   steps:
+  - intent: telegram_start
+  - action: utter_greet
   - intent: add_event
   - action: utter_add_event
   - intent: event_inform
