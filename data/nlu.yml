@@ -2,6 +2,22 @@ version: "3.1"
 
 nlu:
 
+- intent: get_emails
+  examples: |
+    - Fetch my recent emails
+    - Let me see my emails
+    - Do I have any unread emails?
+    - Get my emails
+    - Check my emails
+    - Check my inbox
+    - Who has sent me emails? 
+    - Get me my emails
+    - What are my emails?
+    - What new emails have been sent to me?
+    - Anything new on my inbox?
+    - inbox
+    - emails
+
 - intent: telegram_start
   examples: |
     - /start
@@ -13,13 +29,6 @@ nlu:
     - I have an event
     - event
     - calendar event
-
-    
-# - add event [exercies](event) at [23/09/23 10:00:00](time)
-# - add event [study SEO](event) at [23/09/23 10:00:00](time)
-# - add event [meeting with client](event) at [23/09/23 10:00:00](time)
-# - add event [birthday](event) at [23/09/23 10:00:00](time)
-# - add event [send proposal](event) at [23/09/23 10:00:00](time)
 
 - intent: event_inform
   examples: |

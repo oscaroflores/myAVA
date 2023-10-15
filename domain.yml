@@ -9,6 +9,7 @@ intents:
   - add_event
   - event_inform
   - telegram_start
+  - get_emails
 
 entities:
   - event
@@ -24,6 +25,7 @@ actions:
   - action_hello_world
   - action_add_event
   - action_get_event
+  - action_get_emails
 
 responses:
   utter_add_event:

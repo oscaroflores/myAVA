@@ -2,7 +2,7 @@ version: "3.1"
 
 stories:
 
-- story: happy path
+- story: Add event
   steps:
   - intent: telegram_start
   - action: utter_greet
@@ -10,3 +10,10 @@ stories:
   - action: utter_add_event
   - intent: event_inform
   - action: action_add_event
+
+- story: Get emails
+  steps:
+  - intent: telegram_start
+  - action: utter_greet
+  - intent: get_emails
+  - action: action_get_emails
