@@ -11,7 +11,7 @@ import datetime
 import pytz
 import pickle
 
-CLIENT_FILE = 'creds.json'
+CLIENT_FILE = 'credz.json'
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 class ActionAddEvent(Action):
