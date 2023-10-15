@@ -16,9 +16,8 @@ slots:
   event: 
     type: text
     mappings:
-    - type: from_text
-      conditions:
-      - active_loop: event_form
+    - type: from_entity
+      entity: event
 
 actions:
   - action_hello_world
@@ -27,7 +26,7 @@ actions:
 
 responses:
   utter_add_event:
-  - text: "Lets add an event! Use following format: <event-name>, <#d>/<#m>/<#y>, <time>"
+  - text: "Use following format without spaces and military time: <event-name>,<mm/dd/YYYY>,<hr:min>"
   
   utter_greet:
   - text: "Hey! How are you?"

@@ -60,11 +60,9 @@ class ActionAddEvent(Action):
             print(start, event['summary'])
 
     def add_event(self, time, event):
-        # creates one hour event tomorrow 10 AM IST
         service = self.get_calendar_service()
 
-        # start = datetime.datetime.now(pytz.timezone('Etc/GMT-4'))
-        start = datetime.datetime.strptime(time)
+        start = time
         end = start + datetime.timedelta(hours=1)
 
         event = service.events().insert(calendarId='primary',
@@ -72,31 +70,43 @@ class ActionAddEvent(Action):
                 "summary": event,
                 "description": 'This is a tutorial example of automating google calendar with python',
                 "start": {
-                    "dateTime": start.isoformat(), 
-                    "timeZone": 'Etc/GMT-4'
+                    "dateTime": start.isoformat(),
+                    "timeZone": 'America/Puerto_Rico'
                     },
                 "end": {
-                    "dateTime": end.isoformat(), 
-                    "timeZone": 'Etc/GMT-4'
+                    "dateTime": end.isoformat(),
+                    "timeZone": 'America/Puerto_Rico'
                     },
             }
         ).execute()
     
+    def format_event(self, event):
+        substring = event.split(',')
+        if (len(substring) < 3):
+            return
+        
+        # Format date
+        if len(substring[1]) < 10:
+            temp = substring[1].split('/')
+            if len(temp[0]) == 1:
+                temp[0] = temp[0].zfill(2)
+            if len(temp[1]) == 1:
+                temp[1] = temp[1].zfill(2) 
+        
+        date = datetime.datetime.strptime(substring[1] + " " + substring[2] + ":00", "%m/%d/%Y %H:%M:%S")
+        return date
+
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
         try:
             event = tracker.get_slot("event")
-            # self.add_event(time, event)
-
-            if not event:
-                dispatcher.utter_message(text=f"Event given is wrong: {event}")
-            else:
-                dispatcher.utter_message(text=f"Added event {event}")
+            name = event.split(',')[0]
+            date = self.format_event(event)
+            self.add_event(date, name)
+            dispatcher.utter_message(text=f"Added event {name} at {date}")
         except Exception as e:
             dispatcher.utter_message(text=f"<<ERROR>> {str(e)}")
-        
         return[]
 
 class ActionHelloWorld(Action):
