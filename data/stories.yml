@@ -2,6 +2,11 @@ version: "3.1"
 
 stories:
 
+- story: Greet
+  steps:
+  - intent: greet
+  - action: utter_greet
+
 - story: Add event
   steps:
   - intent: telegram_start

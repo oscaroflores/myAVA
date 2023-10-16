@@ -17,6 +17,9 @@ nlu:
     - Anything new on my inbox?
     - inbox
     - emails
+    - gmail
+    - mail
+    - do I have mail?
 
 - intent: telegram_start
   examples: |
