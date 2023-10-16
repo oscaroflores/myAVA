@@ -10,6 +10,7 @@ intents:
   - event_inform
   - telegram_start
   - get_emails
+  - mark_emails_read
 
 entities:
   - event
@@ -28,6 +29,7 @@ actions:
   - action_get_emails
 
 responses:
+  
   utter_add_event:
   - text: "Use following format without spaces and military time: <event-name>,<mm/dd/YYYY>,<hr:min>"
   

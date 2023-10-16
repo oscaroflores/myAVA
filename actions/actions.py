@@ -9,11 +9,27 @@ from googleapiclient.errors import HttpError
 import os
 import datetime
 import pickle
-import base64
-import email
+from dateutil.parser import *
 
 CLIENT_FILE = 'credz.json'
 SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.modify']
+
+creds = None
+if os.path.exists('token.pickle'):
+    with open('token.pickle', 'rb') as token:
+        creds = pickle.load(token)
+# If there are no (valid) credentials available, let the user log in.
+if not creds or not creds.valid:
+    if creds and creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+    else:
+        flow = InstalledAppFlow.from_client_secrets_file(CLIENT_FILE, SCOPES)
+        creds = flow.run_local_server(port=0)
+
+    # Save the credentials for the next run
+    with open('token.pickle', 'wb') as token:
+        pickle.dump(creds, token)
+
 
 class ActionGetEmails(Action):
 
@@ -23,28 +39,10 @@ class ActionGetEmails(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+
         try:
             service = self.get_mail_service()
             results = service.users().messages().list(userId="me", labelIds=["INBOX", "UNREAD"]).execute()
-            # messages = results["messages"]
-
-            # latest_id = results["messages"][0]["id"]
-            # latest_message = service.users().messages().get(userId='me', id=latest_id).execute()
-            
-            # payload = latest_message['payload']
-            # headers = payload['headers']
-
-            # sender = ""
-            # for x in headers:
-            #     if x['name'] == 'From':
-            #         sender = x['value']
-
-            # subject = ""
-            # for x in headers:
-            #     if x['name'] == 'Subject':
-            #         subject = x['value']
-
             unread_messages = []
 
             for m in results["messages"]:
@@ -55,14 +53,15 @@ class ActionGetEmails(Action):
                 date = ""
                 for x in headers:
                     if x['name'] == 'Date':
-                        date = x['value']
+                        date_parse = parse(x['value'])
+                        date = date_parse.date()
                     else:
                         pass
 
                 sender = ""
                 for x in headers:
                     if x['name'] == 'From':
-                        sender = x['value']
+                        sender = x['value'].split(" <")[0]
                     else:
                         pass
 
@@ -82,7 +81,7 @@ class ActionGetEmails(Action):
                 )
 
             for x in unread_messages:
-                dispatcher.utter_message(text=f"{x['date']} {x['sender']} || {x['subject']}")
+                dispatcher.utter_message(text=f"{x['date']} || {x['sender']} || {x['subject']}")
                 dispatcher.utter_message(text=" ")
 
         except Exception as e:
@@ -90,21 +89,6 @@ class ActionGetEmails(Action):
         return []
 
     def get_mail_service(self):
-        creds = None
-        if os.path.exists('token.pickle'):
-            with open('token.pickle', 'rb') as token:
-                creds = pickle.load(token)
-        # If there are no (valid) credentials available, let the user log in.
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(CLIENT_FILE, SCOPES)
-                creds = flow.run_local_server(port=0)
-
-            # Save the credentials for the next run
-            with open('token.pickle', 'wb') as token:
-                pickle.dump(creds, token)
         try:
             service = build('gmail', 'v1', credentials=creds)
             return service
@@ -128,26 +112,6 @@ class ActionAddEvent(Action):
         except Exception as e:
             dispatcher.utter_message(text=f"<<ERROR>> {str(e)}")
         return[]
-    
-    def get_calendar_service(self):
-        creds = None
-        if os.path.exists('token.pickle'):
-            with open('token.pickle', 'rb') as token:
-                creds = pickle.load(token)
-        # If there are no (valid) credentials available, let the user log in.
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(CLIENT_FILE, SCOPES)
-                creds = flow.run_local_server(port=0)
-
-            # Save the credentials for the next run
-            with open('token.pickle', 'wb') as token:
-                pickle.dump(creds, token)
-
-        service = build('calendar', 'v3', credentials=creds)
-        return service
 
     def add_event(self, time, event):
         service = self.get_calendar_service()
@@ -185,6 +149,13 @@ class ActionAddEvent(Action):
         
         date = datetime.datetime.strptime(substring[1] + " " + substring[2] + ":00", "%m/%d/%Y %H:%M:%S")
         return date
+    
+    def get_calendar_service(self):
+        try:
+            service = build('calendar', 'v3', credentials=creds)
+            return service
+        except Exception as e:
+            return e
 
 
 class ActionHelloWorld(Action):

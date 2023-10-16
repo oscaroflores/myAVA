@@ -22,3 +22,5 @@ stories:
   - action: utter_greet
   - intent: get_emails
   - action: action_get_emails
+  - intent: mark_emails_read
+  # - action: utter_action_mark_emails_read

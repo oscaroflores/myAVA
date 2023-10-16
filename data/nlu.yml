@@ -2,6 +2,14 @@ version: "3.1"
 
 nlu:
 
+- intent: mark_emails_read
+  examples: |
+    - mark emails as read
+    - I have read the emails
+    - the emails are read
+    - read
+    - they are read
+
 - intent: get_emails
   examples: |
     - Fetch my recent emails
