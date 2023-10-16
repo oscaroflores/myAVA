@@ -9,12 +9,18 @@ nlu:
     - the emails are read
     - read
     - they are read
+    - read my mail
+    - inbox is read
+    - mail is read
+    - inbox has been read
+    - I have read all my mail
+    - empty my unread mail
 
 - intent: get_emails
   examples: |
     - Fetch my recent emails
     - Let me see my emails
-    - Do I have any unread emails?
+    - Do I have any emails?
     - Get my emails
     - Check my emails
     - Check my inbox
@@ -78,6 +84,7 @@ nlu:
     - see you around
     - bye bye
     - see you later
+    - thank you
 
 - intent: affirm
   examples: |

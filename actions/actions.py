@@ -14,6 +14,8 @@ from dateutil.parser import *
 CLIENT_FILE = 'credz.json'
 SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.modify']
 
+
+# Connect to my google account
 creds = None
 if os.path.exists('token.pickle'):
     with open('token.pickle', 'rb') as token:
@@ -31,6 +33,35 @@ if not creds or not creds.valid:
         pickle.dump(creds, token)
 
 
+class ActionReadEmails(Action): 
+
+    def name(self) -> Text:
+        return "action_read_emails"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        service = self.get_mail_service()
+        labels = service.users().labels().get(userId='me', id='INBOX').execute()
+
+        if labels["messagesUnread"] != 0:
+            results = service.users().messages().list(userId="me", labelIds=["INBOX", "UNREAD"]).execute()
+            for x in results["messages"]:
+                service.users().messages().modify(userId='me', id=x["id"], body={ 'removeLabelIds': ['UNREAD']}).execute()
+            dispatcher.utter_message(text="All unread emails are now marked as read.")
+        else:
+            dispatcher.utter_message(text="You have no mail at the moment.")
+
+        return []
+    
+    def get_mail_service(self):
+        try:
+            service = build('gmail', 'v1', credentials=creds)
+            return service
+        except Exception as e:
+            return e
+    
 class ActionGetEmails(Action):
 
     def name(self) -> Text:
@@ -40,12 +71,14 @@ class ActionGetEmails(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        try:
-            service = self.get_mail_service()
-            results = service.users().messages().list(userId="me", labelIds=["INBOX", "UNREAD"]).execute()
+        service = self.get_mail_service()
+        labels = service.users().labels().get(userId='me', id='INBOX').execute()
+        
+        if labels["messagesUnread"] != 0:
             unread_messages = []
+            results = service.users().messages().list(userId="me", labelIds=["INBOX", "UNREAD"]).execute()
 
-            for m in results["messages"]:
+            for m in results['messages']:
                 message = service.users().messages().get(userId='me', id=m['id']).execute()
                 payload = message['payload']
                 headers = payload['headers']
@@ -81,11 +114,11 @@ class ActionGetEmails(Action):
                 )
 
             for x in unread_messages:
-                dispatcher.utter_message(text=f"{x['date']} || {x['sender']} || {x['subject']}")
-                dispatcher.utter_message(text=" ")
+                    dispatcher.utter_message(text=f"{x['date']} || {x['sender']} || {x['subject']}")
+                    dispatcher.utter_message(text=" ")
+        else:
+            dispatcher.utter_message(text="You have no mail at the moment.")
 
-        except Exception as e:
-            dispatcher.utter_message(text=f"<<ERROR>> {str(e)}")
         return []
 
     def get_mail_service(self):

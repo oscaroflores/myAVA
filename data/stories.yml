@@ -23,4 +23,47 @@ stories:
   - intent: get_emails
   - action: action_get_emails
   - intent: mark_emails_read
-  # - action: utter_action_mark_emails_read
+  - action: action_read_emails
+
+- story: Sad path 1
+  steps:
+  - intent: telegram_start
+  - action: utter_greet
+  - intent: get_emails
+  - action: action_get_emails
+  - intent: add_event
+  - action: utter_add_event
+  - intent: event_inform
+  - action: action_add_event
+  - intent: mark_emails_read
+  - action: action_read_emails
+
+- story: Sad path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mark_emails_read
+  - action: action_read_emails
+  - intent: telegram_start
+  - intent: add_event
+  - action: utter_add_event
+  - intent: event_inform
+  - action: action_add_event
+  - intent: get_emails
+  - action: action_get_emails
+
+- story: Sad path 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: telegram_start
+  - intent: get_emails
+  - action: action_get_emails
+  - intent: mark_emails_read
+  - action: action_read_emails
+  - intent: event_inform
+  - action: action_add_event
+  - intent: add_event
+  - action: utter_add_event
+  - intent: event_inform
+  - action: action_add_event

@@ -2,6 +2,21 @@ version: "3.1"
 
 rules:
 
+- rule: Read emails
+  steps:
+  - intent: mark_emails_read
+  - action: action_read_emails
+
+- rule: Get emails
+  steps:
+  - intent: get_emails
+  - action: action_get_emails
+
+- rule: Add an event
+  steps:
+  - intent: event_inform
+  - action: action_add_event
+
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye
