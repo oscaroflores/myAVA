@@ -2,6 +2,11 @@ version: "3.1"
 
 rules:
 
+- rule: Add task
+  steps:
+  - intent: add_task
+  - action: action_add_task
+
 - rule: Read emails
   steps:
   - intent: mark_emails_read

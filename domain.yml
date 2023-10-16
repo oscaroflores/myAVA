@@ -11,9 +11,12 @@ intents:
   - telegram_start
   - get_emails
   - mark_emails_read
+  - add_task
+  - task_inform
 
 entities:
   - event
+  - task
 
 slots:
   event: 
@@ -22,14 +25,24 @@ slots:
     - type: from_entity
       entity: event
 
+  task:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: task
+
 actions:
   - action_hello_world
   - action_add_event
   - action_get_event
   - action_get_emails
   - action_read_emails
+  - action_add_task
 
 responses:
+  utter_add_task:
+  - text: "What task would you like me to keep track of?"
+  
   utter_add_event:
   - text: "To add an event use the following format without spaces and use military time: <event-name>,<mm/dd/YYYY>,<hr:min>"
   

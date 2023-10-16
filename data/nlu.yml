@@ -2,6 +2,24 @@ version: "3.1"
 
 nlu:
 
+- intent: add_task
+  examples: |
+    - I want to add a task
+    - keep track of this task for me
+    - I have a task
+    - task
+    - Remind me of this task
+    - I have a task to do
+    - to do
+
+- intent: task_inform
+  examples: |
+    - [exercise for 1 hour](task)
+    - [go for a walk](task)
+    - [take a swim](task)
+    - [eat protein](task)
+    - [read a book](task)
+
 - intent: mark_emails_read
   examples: |
     - mark emails as read

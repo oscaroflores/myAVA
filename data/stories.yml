@@ -7,6 +7,14 @@ stories:
   - intent: greet
   - action: utter_greet
 
+- story: Add task
+  steps:
+  - intent: telegram_start
+  - action: utter_greet
+  - intent: add_task
+  - action: utter_add_task
+  - intent: task_inform
+
 - story: Add event
   steps:
   - intent: telegram_start

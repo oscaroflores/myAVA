@@ -12,7 +12,7 @@ import pickle
 from dateutil.parser import *
 
 CLIENT_FILE = 'credz.json'
-SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.modify']
+SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.modify', 'https://www.googleapis.com/auth/tasks']
 
 
 # Connect to my google account
@@ -32,6 +32,16 @@ if not creds or not creds.valid:
     with open('token.pickle', 'wb') as token:
         pickle.dump(creds, token)
 
+class ActionAddTask(Action):
+
+    def name(self) -> Text:
+        return "action_add_task"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        return []
 
 class ActionReadEmails(Action): 
 
