@@ -13,7 +13,7 @@ import base64
 import email
 
 CLIENT_FILE = 'credz.json'
-SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://mail.google.com/']
+SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.modify']
 
 class ActionGetEmails(Action):
 
@@ -26,30 +26,65 @@ class ActionGetEmails(Action):
         
         try:
             service = self.get_mail_service()
-            results = service.users().messages().list(userId="me", labelIds=["INBOX", "IMPORTANT", "CATEGORY_PERSONAL"], maxResults=3).execute()
+            results = service.users().messages().list(userId="me", labelIds=["INBOX", "UNREAD"]).execute()
+            # messages = results["messages"]
+
+            # latest_id = results["messages"][0]["id"]
+            # latest_message = service.users().messages().get(userId='me', id=latest_id).execute()
             
-            latest_id = results["messages"][0]["id"]
-            latest_message = service.users().messages().get(userId='me', id=latest_id).execute()
-            
-            payload = latest_message['payload']
-            headers = payload['headers']
+            # payload = latest_message['payload']
+            # headers = payload['headers']
 
-            sender = ""
-            for x in headers:
-                if x['name'] == 'From':
-                    sender = x['value']
+            # sender = ""
+            # for x in headers:
+            #     if x['name'] == 'From':
+            #         sender = x['value']
 
-            subject = ""
-            for x in headers:
-                if x['name'] == 'Subject':
-                    subject = x['value']
+            # subject = ""
+            # for x in headers:
+            #     if x['name'] == 'Subject':
+            #         subject = x['value']
 
-            # ids = []
-            # for i in results["messages"]:
-            #     ids.append(results["messages"][i]["id"])
+            unread_messages = []
 
-            dispatcher.utter_message(text=f"From {sender} || {subject}")
-            dispatcher.utter_message(text="")
+            for m in results["messages"]:
+                message = service.users().messages().get(userId='me', id=m['id']).execute()
+                payload = message['payload']
+                headers = payload['headers']
+
+                date = ""
+                for x in headers:
+                    if x['name'] == 'Date':
+                        date = x['value']
+                    else:
+                        pass
+
+                sender = ""
+                for x in headers:
+                    if x['name'] == 'From':
+                        sender = x['value']
+                    else:
+                        pass
+
+                subject = ""
+                for x in headers:
+                    if x['name'] == 'Subject':
+                        subject = x['value']
+                    else:
+                        pass
+
+                unread_messages.append(
+                    {
+                        "date" : date,
+                        "sender" : sender,
+                        "subject" : subject
+                    }
+                )
+
+            for x in unread_messages:
+                dispatcher.utter_message(text=f"{x['date']} {x['sender']} || {x['subject']}")
+                dispatcher.utter_message(text=" ")
+
         except Exception as e:
             dispatcher.utter_message(text=f"<<ERROR>> {str(e)}")
         return []
