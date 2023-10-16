@@ -31,7 +31,7 @@ actions:
 responses:
   
   utter_add_event:
-  - text: "Use following format without spaces and military time: <event-name>,<mm/dd/YYYY>,<hr:min>"
+  - text: "To add an event use the following format without spaces and use military time: <event-name>,<mm/dd/YYYY>,<hr:min>"
   
   utter_greet:
   - text: "Hello there!"
