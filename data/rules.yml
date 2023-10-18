@@ -4,7 +4,7 @@ rules:
 
 - rule: Add task
   steps:
-  - intent: add_task
+  - intent: task_inform
   - action: action_add_task
 
 - rule: Read emails

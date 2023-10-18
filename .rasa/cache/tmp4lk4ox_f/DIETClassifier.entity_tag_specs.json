@@ -1,0 +1,28 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-event",
+      "2": "I-event",
+      "3": "L-event",
+      "4": "U-event",
+      "5": "B-task",
+      "6": "I-task",
+      "7": "L-task",
+      "8": "U-task",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-event": 1,
+      "I-event": 2,
+      "L-event": 3,
+      "U-event": 4,
+      "B-task": 5,
+      "I-task": 6,
+      "L-task": 7,
+      "U-task": 8,
+      "O": 0
+    },
+    "num_tags": 9
+  }
+]

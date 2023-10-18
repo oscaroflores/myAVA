@@ -32,6 +32,7 @@ if not creds or not creds.valid:
     with open('token.pickle', 'wb') as token:
         pickle.dump(creds, token)
 
+
 class ActionAddTask(Action):
 
     def name(self) -> Text:
@@ -41,7 +42,36 @@ class ActionAddTask(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
+        try:
+            service = self.get_task_service()
+            task = tracker.get_slot("task")
+            
+            get_task_lists = service.tasklists().list().execute()
+            task_lists = get_task_lists['items']
+            dispatcher.utter_message(text=f"{task_lists}")
+        except Exception as e:
+            dispatcher.utter_message(text=f"{str(e)}")
+        
+        # list_id = None
+        # for l in task_lists:
+        #     if l['title'] == 'My Tasks':
+        #         list_id = l['id']
+
+        # service.tasks().insert(tasklist=list_id, body={
+        #     "title": "TEST",
+        #     "notes": "this is a description"
+        # }).execute()
+
+        # dispatcher.utter_message(text="Task added!")
+
         return []
+    
+    def get_task_service(self):
+        try:
+            service = build('tasks', 'v1', credentials=creds)
+            return service
+        except Exception as e:
+            return e
 
 class ActionReadEmails(Action): 
 
