@@ -88,7 +88,7 @@ class ActionReadEmails(Action):
             results = service.users().messages().list(userId="me", labelIds=["INBOX", "UNREAD"]).execute()
             for x in results["messages"]:
                 service.users().messages().modify(userId='me', id=x["id"], body={ 'removeLabelIds': ['UNREAD']}).execute()
-            dispatcher.utter_message(text="I have marked your unread emails as 'read'")
+            dispatcher.utter_message(text="I have marked your unread emails as read.")
         else:
             dispatcher.utter_message(text="You have no mail at the moment.")
 

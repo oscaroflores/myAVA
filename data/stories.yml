@@ -5,12 +5,12 @@ stories:
 - story: Greet
   steps:
   - intent: greet
-  - action: utter_greet
+  - action: utter_intro
 
 - story: Get emails
   steps:
   - intent: telegram_start
-  - action: utter_greet
+  - action: utter_intro
   - intent: get_emails
   - action: action_get_emails
   - intent: mark_emails_read
@@ -19,28 +19,36 @@ stories:
 - story: Sad path 1
   steps:
   - intent: telegram_start
-  - action: utter_greet
+  - action: utter_intro
   - intent: get_emails
   - action: action_get_emails
   - intent: mark_emails_read
   - action: action_read_emails
+  - intent: greet
+  - action: utter_greet
 
 - story: Sad path 2
   steps:
   - intent: greet
-  - action: utter_greet
+  - action: utter_intro
   - intent: mark_emails_read
   - action: action_read_emails
+  - intent: greet
+  - action: utter_greet
   - intent: telegram_start
+  - action: utter_intro
   - intent: get_emails
   - action: action_get_emails
 
 - story: Sad path 3
   steps:
   - intent: greet
-  - action: utter_greet
+  - action: utter_intro
   - intent: telegram_start
+  - action: utter_intro
   - intent: get_emails
   - action: action_get_emails
+  - intent: greet
+  - action: utter_greet
   - intent: mark_emails_read
   - action: action_read_emails

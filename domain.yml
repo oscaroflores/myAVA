@@ -69,7 +69,14 @@ actions:
 
 responses:
   utter_intro:
-  - text: "Hello! My name is AVA. I can add events to your google calendar, show you your emails, and create tasks for you."
+  - text: |
+      Hello! My name is AVA. I can help you:
+
+      > Add events to your calendar
+      > Check your email inbox
+      > Create tasks or reminders
+      
+      What assistance will you be needing today?
 
   utter_success:
   - text: "Success!"
