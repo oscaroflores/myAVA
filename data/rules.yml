@@ -2,13 +2,6 @@ version: "3.1"
 
 rules:
 
-# - rule: Add task
-#   steps:
-#   - intent: task_inform
-#   - slot_was_set:
-#     - task
-#   - action: action_add_task
-
 - rule: Activate task form
   steps:
   - intent: add_task

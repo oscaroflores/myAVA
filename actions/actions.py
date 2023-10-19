@@ -87,18 +87,11 @@ class ActionReadEmails(Action):
             results = service.users().messages().list(userId="me", labelIds=["INBOX", "UNREAD"]).execute()
             for x in results["messages"]:
                 service.users().messages().modify(userId='me', id=x["id"], body={ 'removeLabelIds': ['UNREAD']}).execute()
-            dispatcher.utter_message(text="All unread emails are now marked as read.")
+            dispatcher.utter_message(text="I have marked your unread emails as 'read'")
         else:
             dispatcher.utter_message(text="You have no mail at the moment.")
 
         return []
-    
-    # def get_mail_service(self):
-    #     try:
-    #         service = build('gmail', 'v1', credentials=creds)
-    #         return service
-    #     except Exception as e:
-    #         return e
     
 class ActionGetEmails(Action):
 
@@ -159,13 +152,6 @@ class ActionGetEmails(Action):
 
         return []
 
-    # def get_mail_service(self):
-    #     try:
-    #         service = build('gmail', 'v1', credentials=creds)
-    #         return service
-    #     except Exception as e:
-    #         return e
-
 class ActionAddEvent(Action):
 
     def name(self) -> Text:
@@ -220,13 +206,6 @@ class ActionAddEvent(Action):
         
         date = datetime.datetime.strptime(substring[1] + " " + substring[2] + ":00", "%m/%d/%Y %H:%M:%S")
         return date
-    
-    # def get_calendar_service(self):
-    #     try:
-    #         service = build('calendar', 'v3', credentials=creds)
-    #         return service
-    #     except Exception as e:
-    #         return e
 
 
 class ActionHelloWorld(Action):

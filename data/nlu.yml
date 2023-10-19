@@ -12,19 +12,6 @@ nlu:
     - I have a task to do
     - to do
 
-# - intent: task_inform
-#   examples: |
-#     - [exercise for 1 hour](task)
-#     - [go for a walk](task)
-#     - [take a swim](task)
-#     - [eat protein](task)
-#     - [read a book](task)
-#     - [shower](task)
-#     - [tie my shoes](task)
-#     - [study for exam](task)
-#     - [bake a pie](task)
-#     - [eat some cookies](task)
-
 - intent: mark_emails_read
   examples: |
     - mark emails as read

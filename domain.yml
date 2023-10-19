@@ -16,7 +16,6 @@ intents:
 
 entities:
   - event
-  # - task
 
 slots:
   event: 
