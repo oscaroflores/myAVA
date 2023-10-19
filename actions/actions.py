@@ -1,6 +1,7 @@
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.events import SlotSet
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -63,7 +64,7 @@ class ActionAddTask(Action):
         self.add_task(my_tasks_id, task)
         dispatcher.utter_message(text=f"Added {task} to {my_tasks['title']}")
 
-        return []
+        return [SlotSet("task", None)]
     
     def add_task(self, task_list_id, task):
         tasks_service.tasks().insert(tasklist=task_list_id, body={
