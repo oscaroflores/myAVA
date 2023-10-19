@@ -30,6 +30,9 @@ slots:
     influence_conversation: false
     mappings:
     - type: from_text
+      conditions:
+      - active_loop: task_form
+        requested_slot: task
 
 forms:
   task_form:
