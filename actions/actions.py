@@ -162,24 +162,31 @@ class ActionAddEvent(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         try:
-            event = tracker.get_slot("event")
-            name = event.split(',')[0]
-            date = self.format_event(event)
-            self.add_event(date, name)
-            dispatcher.utter_message(text=f"Added event {name} at {date}")
+            name = tracker.get_slot("name")
+            date = tracker.get_slot("date")
+            time = tracker.get_slot("time")
+            self.add_event(name, self.format_date_time(date, time))
+            dispatcher.utter_message(text=f"Added event {name} at {date.replace(' ', '/')} at {time.replace(' ', ':')}")
+
+            # event = tracker.get_slot("event")
+            # name = event.split(',')[0]
+            # date = self.format_event(event)
+            # self.add_event(date, name)
+            # dispatcher.utter_message(text=f"Added event {name} at {date}")
         except Exception as e:
             dispatcher.utter_message(text=f"<<ERROR>> {str(e)}")
-        return[]
+        
+        return[SlotSet("name", None), SlotSet("date", None), SlotSet("time", None)]
 
-    def add_event(self, time, event):
+    def add_event(self, name, date_time):
         service = calendar_service
 
-        start = time
+        start = date_time
         end = start + datetime.timedelta(hours=1)
 
         event = service.events().insert(calendarId='primary',
             body={
-                "summary": event,
+                "summary": name,
                 "description": 'This is a tutorial example of automating google calendar with python',
                 "start": {
                     "dateTime": start.isoformat(),
@@ -192,21 +199,17 @@ class ActionAddEvent(Action):
             }
         ).execute()
     
-    def format_event(self, event):
-        substring = event.split(',')
-        if (len(substring) < 3):
-            return
-        
+    def format_date_time(self, date, time):
         # Format date
-        if len(substring[1]) < 10:
-            temp = substring[1].split('/')
+        if len(date) < 10:
+            temp = date.split(' ')
             if len(temp[0]) == 1:
                 temp[0] = temp[0].zfill(2)
             if len(temp[1]) == 1:
                 temp[1] = temp[1].zfill(2) 
         
-        date = datetime.datetime.strptime(substring[1] + " " + substring[2] + ":00", "%m/%d/%Y %H:%M:%S")
-        return date
+        date_time = datetime.datetime.strptime(date + " " + time.replace(' ', ':') + ":00", "%m %d %Y %H:%M:%S")
+        return date_time
 
 
 class ActionHelloWorld(Action):

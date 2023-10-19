@@ -18,12 +18,11 @@ entities:
   - event
 
 slots:
-  event: 
-    type: text
-    mappings:
-    - type: from_entity
-      entity: event
-
+  # event: 
+  #   type: text
+  #   mappings:
+  #   - type: from_entity
+  #     entity: event
   task:
     type: text
     influence_conversation: false
@@ -32,11 +31,40 @@ slots:
       conditions:
       - active_loop: task_form
         requested_slot: task
+  name:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: event_form
+        requested_slot: name
+  date:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: event_form
+        requested_slot: date
+  time:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: event_form
+        requested_slot: time
 
 forms:
   task_form:
     required_slots:
       - task
+  event_form:
+    required_slots:
+      - name
+      - date
+      - time
         
 
 actions:
@@ -48,14 +76,26 @@ actions:
   - action_add_task
 
 responses:
+  utter_intro:
+  - text: "Hello! My name is AVA. I can add events to your google calendar, show you your emails, and create tasks for you."
+
   utter_success:
   - text: "Success!"
 
   utter_ask_task_form_task:
   - text: "What will be the name of your task?"
   
-  utter_add_event:
-  - text: "To add an event use the following format without spaces and use military time: <event-name>,<mm/dd/YYYY>,<hr:min>"
+  utter_ask_event_form_name:
+  - text: "What is the name of your event?"
+  
+  utter_ask_event_form_date:
+  - text: "What is the date of your event? Use format: mm dd YYYY (i.e. 10 7 2023)."
+  
+  utter_ask_event_form_time:
+  - text: "What is the time of your event? Use military time format: hr min (i.e. 14 00)."
+  
+  # utter_add_event:
+  # - text: "To add an event use the following format without spaces and use military time: <event-name>,<mm/dd/YYYY>,<hr:min>"
   
   utter_greet:
   - text: "Hello there!"

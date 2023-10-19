@@ -1,7 +1,25 @@
 version: "3.1"
 
 rules:
+# Event form
+- rule: Activate event form
+  steps:
+  - intent: add_event
+  - action: event_form
+  - active_loop: event_form
 
+- rule: Submit event
+  condition:
+  - active_loop: event_form
+  steps:
+  - action: event_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_success
+  - action: action_add_event
+
+# Task form
 - rule: Activate task form
   steps:
   - intent: add_task

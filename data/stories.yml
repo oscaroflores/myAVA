@@ -7,14 +7,14 @@ stories:
   - intent: greet
   - action: utter_greet
 
-- story: Add event
-  steps:
-  - intent: telegram_start
-  - action: utter_greet
-  - intent: add_event
-  - action: utter_add_event
-  - intent: event_inform
-  - action: action_add_event
+# - story: Add event
+#   steps:
+#   - intent: telegram_start
+#   - action: utter_greet
+#   - intent: add_event
+#   - action: utter_add_event
+#   - intent: event_inform
+#   - action: action_add_event
 
 - story: Get emails
   steps:
@@ -31,10 +31,10 @@ stories:
   - action: utter_greet
   - intent: get_emails
   - action: action_get_emails
-  - intent: add_event
-  - action: utter_add_event
-  - intent: event_inform
-  - action: action_add_event
+  # - intent: add_event
+  # - action: utter_add_event
+  # - intent: event_inform
+  # - action: action_add_event
   - intent: mark_emails_read
   - action: action_read_emails
 
@@ -45,10 +45,10 @@ stories:
   - intent: mark_emails_read
   - action: action_read_emails
   - intent: telegram_start
-  - intent: add_event
-  - action: utter_add_event
-  - intent: event_inform
-  - action: action_add_event
+  # - intent: add_event
+  # - action: utter_add_event
+  # - intent: event_inform
+  # - action: action_add_event
   - intent: get_emails
   - action: action_get_emails
 
@@ -61,9 +61,9 @@ stories:
   - action: action_get_emails
   - intent: mark_emails_read
   - action: action_read_emails
-  - intent: event_inform
-  - action: action_add_event
-  - intent: add_event
-  - action: utter_add_event
-  - intent: event_inform
-  - action: action_add_event
+  # - intent: event_inform
+  # - action: action_add_event
+  # - intent: add_event
+  # - action: utter_add_event
+  # - intent: event_inform
+  # - action: action_add_event
