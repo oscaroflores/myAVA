@@ -57,15 +57,6 @@ nlu:
     - event
     - calendar event
 
-# - intent: event_inform
-#   examples: |
-#     - [something, 10/2/2023, 10:00PM](event)
-#     - add event [exercies, 10/2/2023, 10:00PM](event)
-#     - add an event [study SEO, 10/3/2023, 10:00PM](event)
-#     - the following: [meeting with client, 10/3/2023, 10:00PM](event)
-#     - the event is [birthday, 10/3/2023, 10:00PM](event)
-#     - this is the event [send proposal, 10/3/2023, 10:00PM](event)
-
 - intent: greet
   examples: |
     - hey

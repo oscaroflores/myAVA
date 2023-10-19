@@ -167,12 +167,6 @@ class ActionAddEvent(Action):
             time = tracker.get_slot("time")
             self.add_event(name, self.format_date_time(date, time))
             dispatcher.utter_message(text=f"Added event {name} at {date.replace(' ', '/')} at {time.replace(' ', ':')}")
-
-            # event = tracker.get_slot("event")
-            # name = event.split(',')[0]
-            # date = self.format_event(event)
-            # self.add_event(date, name)
-            # dispatcher.utter_message(text=f"Added event {name} at {date}")
         except Exception as e:
             dispatcher.utter_message(text=f"<<ERROR>> {str(e)}")
         

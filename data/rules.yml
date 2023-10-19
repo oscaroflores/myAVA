@@ -47,11 +47,6 @@ rules:
   - intent: get_emails
   - action: action_get_emails
 
-- rule: Add an event
-  steps:
-  - intent: event_inform
-  - action: action_add_event
-
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye

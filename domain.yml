@@ -14,15 +14,7 @@ intents:
   - add_task
   - task_inform
 
-entities:
-  - event
-
 slots:
-  # event: 
-  #   type: text
-  #   mappings:
-  #   - type: from_entity
-  #     entity: event
   task:
     type: text
     influence_conversation: false
@@ -93,9 +85,6 @@ responses:
   
   utter_ask_event_form_time:
   - text: "What is the time of your event? Use military time format: hr min (i.e. 14 00)."
-  
-  # utter_add_event:
-  # - text: "To add an event use the following format without spaces and use military time: <event-name>,<mm/dd/YYYY>,<hr:min>"
   
   utter_greet:
   - text: "Hello there!"
