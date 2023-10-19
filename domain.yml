@@ -27,8 +27,15 @@ slots:
 
   task:
     type: text
+    influence_conversation: false
     mappings:
     - type: from_text
+
+forms:
+  task_form:
+    required_slots:
+      - task
+        
 
 actions:
   - action_hello_world
@@ -39,7 +46,10 @@ actions:
   - action_add_task
 
 responses:
-  utter_add_task:
+  utter_success:
+  - text: "Success!"
+
+  utter_ask_task_form_task:
   - text: "What task would you like me to keep track of?"
   
   utter_add_event:
