@@ -12,8 +12,12 @@ import pickle
 from dateutil.parser import *
 
 CLIENT_FILE = 'credz.json'
-SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.modify']
+SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.modify', 'https://www.googleapis.com/auth/tasks']
 
+class ActionGoogleConnect(Action):
+
+    def name(self) -> Text:
+        return "action_google_connect"
 
 # Connect to my google account
 creds = None
@@ -32,6 +36,40 @@ if not creds or not creds.valid:
     with open('token.pickle', 'wb') as token:
         pickle.dump(creds, token)
 
+# Google API Services:
+tasks_service = build('tasks', 'v1', credentials=creds)
+gmail_service = build('gmail', 'v1', credentials=creds)
+calendar_service = build('calendar', 'v3', credentials=creds)
+
+class ActionAddTask(Action):
+
+    def name(self) -> Text:
+        return "action_add_task"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        # Get task list where task will be added
+        task_lists = tasks_service.tasklists().list().execute()['items']
+        my_tasks_id = None
+        for x in task_lists:
+            if x['title'] == 'My Tasks':
+                my_tasks_id = x['id']
+        my_tasks = tasks_service.tasklists().get(tasklist=my_tasks_id).execute()
+
+        # Insert new task to the list
+        task = tracker.get_slot("task")
+        self.add_task(my_tasks_id, task)
+        dispatcher.utter_message(text=f"Added {task} to {my_tasks['title']}")
+
+        return []
+    
+    def add_task(self, task_list_id, task):
+        tasks_service.tasks().insert(tasklist=task_list_id, body={
+            "title":task
+        }).execute()
+
 
 class ActionReadEmails(Action): 
 
@@ -42,7 +80,7 @@ class ActionReadEmails(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        service = self.get_mail_service()
+        service = gmail_service
         labels = service.users().labels().get(userId='me', id='INBOX').execute()
 
         if labels["messagesUnread"] != 0:
@@ -55,12 +93,12 @@ class ActionReadEmails(Action):
 
         return []
     
-    def get_mail_service(self):
-        try:
-            service = build('gmail', 'v1', credentials=creds)
-            return service
-        except Exception as e:
-            return e
+    # def get_mail_service(self):
+    #     try:
+    #         service = build('gmail', 'v1', credentials=creds)
+    #         return service
+    #     except Exception as e:
+    #         return e
     
 class ActionGetEmails(Action):
 
@@ -71,7 +109,7 @@ class ActionGetEmails(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        service = self.get_mail_service()
+        service = gmail_service
         labels = service.users().labels().get(userId='me', id='INBOX').execute()
         
         if labels["messagesUnread"] != 0:
@@ -121,12 +159,12 @@ class ActionGetEmails(Action):
 
         return []
 
-    def get_mail_service(self):
-        try:
-            service = build('gmail', 'v1', credentials=creds)
-            return service
-        except Exception as e:
-            return e
+    # def get_mail_service(self):
+    #     try:
+    #         service = build('gmail', 'v1', credentials=creds)
+    #         return service
+    #     except Exception as e:
+    #         return e
 
 class ActionAddEvent(Action):
 
@@ -147,7 +185,7 @@ class ActionAddEvent(Action):
         return[]
 
     def add_event(self, time, event):
-        service = self.get_calendar_service()
+        service = calendar_service
 
         start = time
         end = start + datetime.timedelta(hours=1)
@@ -183,12 +221,12 @@ class ActionAddEvent(Action):
         date = datetime.datetime.strptime(substring[1] + " " + substring[2] + ":00", "%m/%d/%Y %H:%M:%S")
         return date
     
-    def get_calendar_service(self):
-        try:
-            service = build('calendar', 'v3', credentials=creds)
-            return service
-        except Exception as e:
-            return e
+    # def get_calendar_service(self):
+    #     try:
+    #         service = build('calendar', 'v3', credentials=creds)
+    #         return service
+    #     except Exception as e:
+    #         return e
 
 
 class ActionHelloWorld(Action):

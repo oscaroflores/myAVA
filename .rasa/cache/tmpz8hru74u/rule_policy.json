@@ -1,0 +1,43 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"event_inform\"}}]": "action_add_event",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"event_inform\"}}, {\"prev_action\": {\"action_name\": \"action_add_event\"}, \"user\": {\"intent\": \"event_inform\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"mark_emails_read\"}}]": "action_read_emails",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"mark_emails_read\"}}, {\"prev_action\": {\"action_name\": \"action_read_emails\"}, \"user\": {\"intent\": \"mark_emails_read\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}]": "utter_goodbye",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}, {\"prev_action\": {\"action_name\": \"utter_goodbye\"}, \"user\": {\"intent\": \"goodbye\"}}]": "action_listen",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"task_form\"}}]": "utter_success",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"task_form\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"utter_success\"}}]": "action_add_task",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"task_form\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"utter_success\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_add_task\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"add_task\"}}]": "task_form",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"add_task\"}}, {\"active_loop\": {\"name\": \"task_form\"}, \"prev_action\": {\"action_name\": \"task_form\"}, \"user\": {\"intent\": \"add_task\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"get_emails\"}}]": "action_get_emails",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"get_emails\"}}, {\"prev_action\": {\"action_name\": \"action_get_emails\"}, \"user\": {\"intent\": \"get_emails\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}]": "utter_iamabot",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}, {\"prev_action\": {\"action_name\": \"utter_iamabot\"}, \"user\": {\"intent\": \"bot_challenge\"}}]": "action_listen"
+    },
+    "rule_only_slots": [],
+    "rule_only_loops": [
+      "task_form"
+    ],
+    "rules_for_loop_unhappy_path": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}}, {\"active_loop\": {\"name\": \"task_form\"}, \"prev_action\": {\"action_name\": \"task_form\"}, \"user\": {\"intent\": \"add_task\"}}]": "do_not_predict_loop_action"
+    },
+    "rules_not_in_stories": [
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"add_task\"}}]",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"task_form\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"utter_success\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_add_task\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}, {\"prev_action\": {\"action_name\": \"utter_goodbye\"}, \"user\": {\"intent\": \"goodbye\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}, {\"prev_action\": {\"action_name\": \"utter_iamabot\"}, \"user\": {\"intent\": \"bot_challenge\"}}]",
+      "predicting default action with intent back",
+      "handling active loops and forms - task_form",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"task_form\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"utter_success\"}}]",
+      "predicting default action with intent restart",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}]",
+      "predicting default action with intent session_start",
+      "handling active loops and forms - task_form - action_listen",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"task_form\"}}]"
+    ]
+  }
+}
