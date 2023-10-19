@@ -80,7 +80,7 @@ class ActionReadEmails(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        service = self.get_mail_service()
+        service = gmail_service
         labels = service.users().labels().get(userId='me', id='INBOX').execute()
 
         if labels["messagesUnread"] != 0:
@@ -93,12 +93,12 @@ class ActionReadEmails(Action):
 
         return []
     
-    def get_mail_service(self):
-        try:
-            service = build('gmail', 'v1', credentials=creds)
-            return service
-        except Exception as e:
-            return e
+    # def get_mail_service(self):
+    #     try:
+    #         service = build('gmail', 'v1', credentials=creds)
+    #         return service
+    #     except Exception as e:
+    #         return e
     
 class ActionGetEmails(Action):
 
@@ -109,7 +109,7 @@ class ActionGetEmails(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        service = self.get_mail_service()
+        service = gmail_service
         labels = service.users().labels().get(userId='me', id='INBOX').execute()
         
         if labels["messagesUnread"] != 0:
@@ -159,12 +159,12 @@ class ActionGetEmails(Action):
 
         return []
 
-    def get_mail_service(self):
-        try:
-            service = build('gmail', 'v1', credentials=creds)
-            return service
-        except Exception as e:
-            return e
+    # def get_mail_service(self):
+    #     try:
+    #         service = build('gmail', 'v1', credentials=creds)
+    #         return service
+    #     except Exception as e:
+    #         return e
 
 class ActionAddEvent(Action):
 
@@ -185,7 +185,7 @@ class ActionAddEvent(Action):
         return[]
 
     def add_event(self, time, event):
-        service = self.get_calendar_service()
+        service = calendar_service
 
         start = time
         end = start + datetime.timedelta(hours=1)
@@ -221,12 +221,12 @@ class ActionAddEvent(Action):
         date = datetime.datetime.strptime(substring[1] + " " + substring[2] + ":00", "%m/%d/%Y %H:%M:%S")
         return date
     
-    def get_calendar_service(self):
-        try:
-            service = build('calendar', 'v3', credentials=creds)
-            return service
-        except Exception as e:
-            return e
+    # def get_calendar_service(self):
+    #     try:
+    #         service = build('calendar', 'v3', credentials=creds)
+    #         return service
+    #     except Exception as e:
+    #         return e
 
 
 class ActionHelloWorld(Action):
