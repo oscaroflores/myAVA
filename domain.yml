@@ -53,7 +53,7 @@ responses:
   - text: "Success!"
 
   utter_ask_task_form_task:
-  - text: "What task would you like me to keep track of?"
+  - text: "What will be the name of your task?"
   
   utter_add_event:
   - text: "To add an event use the following format without spaces and use military time: <event-name>,<mm/dd/YYYY>,<hr:min>"

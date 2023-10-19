@@ -14,6 +14,10 @@ from dateutil.parser import *
 CLIENT_FILE = 'credz.json'
 SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.modify', 'https://www.googleapis.com/auth/tasks']
 
+class ActionGoogleConnect(Action):
+
+    def name(self) -> Text:
+        return "action_google_connect"
 
 # Connect to my google account
 creds = None
@@ -32,6 +36,10 @@ if not creds or not creds.valid:
     with open('token.pickle', 'wb') as token:
         pickle.dump(creds, token)
 
+# Google API Services:
+tasks_service = build('tasks', 'v1', credentials=creds)
+gmail_service = build('gmail', 'v1', credentials=creds)
+calendar_service = build('calendar', 'v3', credentials=creds)
 
 class ActionAddTask(Action):
 
@@ -42,23 +50,26 @@ class ActionAddTask(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        try:
-            service = self.get_task_service()
-            task = tracker.get_slot("task")
-            
-            # task_lists = service.tasklists().list().execute()
-            dispatcher.utter_message(text=f"{task}")
-        except Exception as e:
-            dispatcher.utter_message(text=f"{str(e)}")
+        # Get task list where task will be added
+        task_lists = tasks_service.tasklists().list().execute()['items']
+        my_tasks_id = None
+        for x in task_lists:
+            if x['title'] == 'My Tasks':
+                my_tasks_id = x['id']
+        my_tasks = tasks_service.tasklists().get(tasklist=my_tasks_id).execute()
+
+        # Insert new task to the list
+        task = tracker.get_slot("task")
+        self.add_task(my_tasks_id, task)
+        dispatcher.utter_message(text=f"Added {task} to {my_tasks['title']}")
 
         return []
     
-    def get_task_service(self):
-        try:
-            service = build('tasks', 'v1', credentials=creds)
-            return service
-        except Exception as e:
-            return e
+    def add_task(self, task_list_id, task):
+        tasks_service.tasks().insert(tasklist=task_list_id, body={
+            "title":task
+        }).execute()
+
 
 class ActionReadEmails(Action): 
 
