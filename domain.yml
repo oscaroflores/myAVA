@@ -16,7 +16,7 @@ intents:
 
 entities:
   - event
-  - task
+  # - task
 
 slots:
   event: 
@@ -28,8 +28,7 @@ slots:
   task:
     type: text
     mappings:
-    - type: from_entity
-      entity: task
+    - type: from_text
 
 actions:
   - action_hello_world

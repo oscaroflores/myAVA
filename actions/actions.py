@@ -46,23 +46,10 @@ class ActionAddTask(Action):
             service = self.get_task_service()
             task = tracker.get_slot("task")
             
-            get_task_lists = service.tasklists().list().execute()
-            task_lists = get_task_lists['items']
-            dispatcher.utter_message(text=f"{task_lists}")
+            # task_lists = service.tasklists().list().execute()
+            dispatcher.utter_message(text=f"{task}")
         except Exception as e:
             dispatcher.utter_message(text=f"{str(e)}")
-        
-        # list_id = None
-        # for l in task_lists:
-        #     if l['title'] == 'My Tasks':
-        #         list_id = l['id']
-
-        # service.tasks().insert(tasklist=list_id, body={
-        #     "title": "TEST",
-        #     "notes": "this is a description"
-        # }).execute()
-
-        # dispatcher.utter_message(text="Task added!")
 
         return []
     

@@ -14,6 +14,8 @@ stories:
   - intent: add_task
   - action: utter_add_task
   - intent: task_inform
+  - slot_was_set:
+    - task
   - action: action_add_task
 
 - story: Add event
